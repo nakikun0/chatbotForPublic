@@ -1,0 +1,84 @@
+    <style>
+        label{
+            margin-left:10px;
+            margin-top:5px;
+        }
+        div.display{
+            width:150px;
+            overflow: hidden;
+            float: left;
+            text-align: left;
+        }
+
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    {% extends "layout.html" %}
+    {% block content %}
+
+    <label>LINEのユーザー名を入力してください:<input id="username" required></input></label>
+    <input type="button" value="送信" id="checkButton">
+
+    <br>
+    <div class="display" id="currentDisplay">
+        <label for="thisMonthShiftInfo" id="labelForNow" style="display: none" >{{ thisYear }}年{{ thisMonth }}月</label>
+        <ul id="thisMonthShiftInfo"></ul>
+    </div>
+    <div class="display" id="nextDisplay">
+        <label for="nextMonthShiftInfo" id="labelForNext" style="display: none">{{ nextYear }}年{{ nextMonth }}月</label>
+        <ul id="nextMonthShiftInfo"></ul>
+    </div>
+    <script>
+        const usersShift = {{ usersShift|tojson }};
+        const num = {{ num }};
+
+        document.getElementById("checkButton").addEventListener('click', function() {
+
+            var name = document.getElementById("username").value;
+            var currentShiftInfo = document.getElementById('thisMonthShiftInfo');
+            var nextShiftInfo = document.getElementById('nextMonthShiftInfo');
+
+            while (currentShiftInfo.firstChild) {
+                currentShiftInfo.removeChild(currentShiftInfo.firstChild);
+            }
+            while (nextShiftInfo.firstChild) {
+                nextShiftInfo.removeChild(nextShiftInfo.firstChild);
+            }
+
+
+            if (usersShift[name]){
+                thisMonthShift = usersShift[name]["this_month"].split(',');
+                nextMonthShift = usersShift[name]["next_month"].split(',');
+
+                for (var i = 0; i < thisMonthShift.length; i++) {
+                    var shiftData = document.createElement('li');
+                    shiftData.textContent = thisMonthShift[i]+"日";
+                    currentShiftInfo.appendChild(shiftData);
+                }
+                document.getElementById('labelForNow').style.display = "block";
+
+                for (var i = 0; i < nextMonthShift.length; i++) {
+                　var shiftData = document.createElement('li');
+                　shiftData.textContent = nextMonthShift[i]+"日";
+                　nextShiftInfo.appendChild(shiftData);
+                }
+                document.getElementById('labelForNext').style.display = "block";
+
+            }
+            if(!usersShift[name]){
+                alert("データが取得できませんでした.\n名前が間違っている可能性があります．");
+                document.getElementById('labelForNow').style.display = "none";
+                document.getElementById('labelForNext').style.display = "none";
+            }
+
+        });
+
+    </script>
+
+
+
+
+
+    {% endblock %}
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>

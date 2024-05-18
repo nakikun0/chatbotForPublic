@@ -1,0 +1,64 @@
+    <style>
+        form {
+            margin-left: 10px;
+            margin-top: 5px;
+        }
+
+    </style>
+    {% extends "layout.html" %}
+    {% block content %}
+
+    <!--　選択ボタン-->
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+      <input type="radio" class="btn-check" name="btnradio" id="this_month_btn" autocomplete="off" checked>
+      <label class="btn btn-outline-primary" for="this_month_btn">{{ year }}年{{ month }}月度</label>
+
+      <input type="radio" class="btn-check" name="btnradio" id="next_month_btn" autocomplete="off">
+      <label class="btn btn-outline-primary" for="next_month_btn">{{ next_year }}年{{ next_month }}月度</label>
+    </div>
+
+    <form action="/success" method="POST">
+        <label>LINEのユーザー名を入力してください<input name="username" required></input></label>
+        <div id="this_month" style="display:block;">
+            <ul id = "list">
+                {% for i in range(days) %}
+                <li id="dates"><input type="checkbox" name="dates" value="{{ i+1 }}">{{ i+1 }}日</li>
+                {% endfor %}
+                <button type="submit">送信</button>
+            </ul>
+        </div>
+
+        <div id="next_month" style="display:none;">
+            <ul id = "next_list">
+                {% for i in range(next_days) %}
+                <li id="next_dates"><input type="checkbox" name="next_dates" value="{{ i+1 }}">{{ i+1 }}日</li>
+                {% endfor %}
+                <button type="submit">送信</button>
+            </ul>
+        </div>
+    <label for="list">出勤日のチェックボックスにチェックを入れてください</label>
+    </form>
+
+    <script>
+
+        document.getElementById("this_month_btn").addEventListener("change", function() {
+            if(this.checked){
+                document.getElementById("this_month").style.display = "block";
+                document.getElementById("next_month").style.display = "none";
+                alert("今月度に切り替わりました");
+            }
+        });
+
+        document.getElementById("next_month_btn").addEventListener("change", function() {
+            if(this.checked){
+                document.getElementById("this_month").style.display = "none";
+                document.getElementById("next_month").style.display = "block";
+                alert("来月度に切り替わりました");
+            }
+        });
+
+    </script>
+
+    {% endblock %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
