@@ -127,7 +127,7 @@ scheduler.add_job(sendMessage, morning_trigger)
 
 evening_trigger = CronTrigger(hour=22, minute=0,
                               timezone=timezone('Asia/Tokyo'))
-scheduler.add_job(sendMessage, evening_trigger)
+scheduler.add_job(evening_sendMessage, evening_trigger)
 
 month_trigger = CronTrigger(day=1, hour=6, minute=58,
                             timezone=timezone('Asia/Tokyo'))
