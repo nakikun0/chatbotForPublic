@@ -221,10 +221,6 @@ def check_shift():
                            num=num, thisYear=dt.year, thisMonth=dt.month, nextYear=NextDates[0],
                            nextMonth=NextDates[1])
 
-@app.route('/instruction')
-def instruction():
-    return render_template("testapp/instruction.html")
-
 
 @app.route("/callback", methods=['POST'])
 def callback():
